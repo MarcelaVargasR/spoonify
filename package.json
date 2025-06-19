@@ -1,0 +1,14 @@
+{
+  "name": "spoonify2025",
+  "version": "1.0.0",
+  "description": "app about recipe ",
+  "main": "\u001b[D\u001b[D\u001b[D\u001bmain.js\u001b[\u001b[\u001b[\u001b ()\u001b[Dmain.js\u001b[C\u001b[D)",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "author": "Marcela Vargas",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
