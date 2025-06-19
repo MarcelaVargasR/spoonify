@@ -4,11 +4,19 @@
   "description": "app about recipe ",
   "main": "\u001b[D\u001b[D\u001b[D\u001bmain.js\u001b[\u001b[\u001b[\u001b ()\u001b[Dmain.js\u001b[C\u001b[D)",
   "scripts": {
-    "start": "node src/main.js"
+    "start": "node dist/main.js",
+    "build": "tsc",
+    "dev": "ts-node-dev src/main.ts"
   },
   "author": "Marcela Vargas",
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
   }
 }
