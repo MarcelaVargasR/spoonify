@@ -1,10 +1,8 @@
 import express from "express";
+import { config } from "./config/";
 
+const app = express();
 
-
-const app = express()
-
-app.listen(3001,() => {
-    console.log("App Running on port 3001")
-})
-
+app.listen(config.port, () => {
+  console.log(`App Running on port ${config.port}`);
+});
