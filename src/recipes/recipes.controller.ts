@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 
-async function getrecipes(req: Request, res: Response) {
-  console.log("🚀 ~ getrecipes ~ req:", req.body.title);
+async function getrecipes(_req: Request, res: Response) {
   res.json({
     message: "Get All Recipes",
   });
