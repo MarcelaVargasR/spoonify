@@ -8,6 +8,7 @@ const app = express();
 db.connect();
 dotenv.config();
 
+app.use(express.json()) //parse the body to an object
 app.use("/", router);
 
 app.listen(config.port, () => {
