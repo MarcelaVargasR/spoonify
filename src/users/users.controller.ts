@@ -8,6 +8,7 @@ async function createUser(req: Request, res: Response) {
   const newUser = await new UserModel({
     email: body.email,
     password: body.password,
+    isAdmin: body.isAdmin
   }).save();
 
   res.json({
