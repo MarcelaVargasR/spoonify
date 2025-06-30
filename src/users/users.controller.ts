@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { UserModel } from "./User.model";
 import { UserType } from "../types/user.type";
 
+
+
 async function createUser(req: Request, res: Response) {
   const body: UserType = req.body;
 
