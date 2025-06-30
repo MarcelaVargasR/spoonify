@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { UserModel } from "../users/User.model";
 import { RegisterType } from "../types/register.type";
 import { hashPassword } from "../utils/hash-password.util";
+import { generateAccessToken } from "../utils/generate-access-token.util";
 
 async function login(req: Request, res: Response) {
   const body: RegisterType = req.body;
@@ -22,8 +23,11 @@ async function login(req: Request, res: Response) {
     });
   }
 
+  const accesToken = generateAccessToken(foundUser as object)
+
   res.json({
     message: "Log in ",
+    accesToken
   });
 }
 
