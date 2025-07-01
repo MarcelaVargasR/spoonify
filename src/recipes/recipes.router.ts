@@ -11,8 +11,8 @@ import { isAuthenticated } from "../middlewares/is-authenticated.middleware";
 const router = Router();
 
 router.route("/").get(getrecipes);
-router.route("/").post(createRecipe);
-router.route("/:id").put(updateRecipeById);
+router.route("/").post(isAuthenticated, createRecipe);
+router.route("/:id").put(isAuthenticated, updateRecipeById);
 router.route("/:id").get(isAuthenticated, getRecipeById);
 router
   .route("/:id")
