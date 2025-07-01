@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { RecipeModel } from "./Recipe.model";
 import { RecipeType } from "../types/recipe.type";
+import { Request } from "../types/platform-request.type";
 
 async function createRecipe(req: Request, res: Response) {
   const body: RecipeType = req.body;
