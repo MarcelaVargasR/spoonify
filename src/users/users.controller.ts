@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { UserModel } from "./User.model";
 import { UserType } from "../types/user.type";
-
-
+import { hashPassword } from "../utils/hash-password.util";
 
 async function createUser(req: Request, res: Response) {
   const body: UserType = req.body;
+  const hashedPassword = await hashPassword(body.password);
 
   const newUser = await new UserModel({
     email: body.email,
-    password: body.password,
-    isAdmin: body.isAdmin
+    password: hashedPassword,
+    isAdmin: body.isAdmin,
   }).save();
 
   res.json({
@@ -36,7 +36,7 @@ async function getUserById(req: Request, res: Response) {
 }
 
 async function updateUserById(req: Request, res: Response) {
-  console.log("🚀 ~ updateUserById ~ req:", req)
+  console.log("🚀 ~ updateUserById ~ req:", req);
   const body: UserType = req.body;
   const userId = req.params.id;
   const updateUser = await UserModel.findByIdAndUpdate(userId, body, {
@@ -46,11 +46,11 @@ async function updateUserById(req: Request, res: Response) {
   res.json(updateUser);
 }
 
-async function deleteUserById(req:Request, res:Response) {
+async function deleteUserById(req: Request, res: Response) {
   const userId = req.params.id;
-  const deleteUser = await UserModel.findByIdAndDelete(userId)
+  const deleteUser = await UserModel.findByIdAndDelete(userId);
 
-  res.json(deleteUser)
+  res.json(deleteUser);
 }
 
 export { createUser, getAllUser, getUserById, updateUserById, deleteUserById };
