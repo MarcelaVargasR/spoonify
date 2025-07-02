@@ -1,4 +1,5 @@
 import type { IngredientType } from "../types/ingredient.type";
+import {UserType} from "../types/user.type"
 
 export type RecipeType = {
   title: string;
@@ -11,4 +12,5 @@ export type RecipeType = {
   difficultyLevel: "easy" | "medium" | "hard";
   priceEstimate: number;
   isPrivate: boolean;
+  author: UserType
 };

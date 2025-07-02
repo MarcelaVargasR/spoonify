@@ -56,6 +56,10 @@ const recipeSchema = new Schema({
     type: Boolean,
     require: true,
   },
+  author:{
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 const RecipeModel = model("Recipe", recipeSchema);

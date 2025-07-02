@@ -7,11 +7,12 @@ import {
   deleteRecipeById,
 } from "./recipes.controller";
 import { isAuthenticated } from "../middlewares/is-authenticated.middleware";
+import {isAdmin} from "../middlewares/is-admin.middleware"
 
 const router = Router();
 
-router.route("/").get(getrecipes);
-router.route("/").post(isAuthenticated, createRecipe);
+router.route("/").get(isAuthenticated,getrecipes);
+router.route("/").post(isAuthenticated, isAdmin, createRecipe);
 router.route("/:id").put(isAuthenticated, updateRecipeById);
 router.route("/:id").get(isAuthenticated, getRecipeById);
 router

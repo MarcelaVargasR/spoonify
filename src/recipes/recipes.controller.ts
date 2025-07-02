@@ -16,7 +16,8 @@ async function createRecipe(req: Request, res: Response) {
     cookingTime: body.cookingTime,
     difficultyLevel: body.difficultyLevel,
     priceEstimate: body.priceEstimate,
-    isPrivate: body.isPrivate
+    isPrivate: body.isPrivate,
+    author: req.user?._id
   }).save();
 
   res.json({
