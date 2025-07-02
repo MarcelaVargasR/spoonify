@@ -9,6 +9,9 @@ db.connect();
 dotenv.config();
 
 app.use(express.json()) //parse the body to an object
+app.use(express.urlencoded({
+  extended: false
+}))
 app.use("/", router);
 
 app.listen(config.port, () => {

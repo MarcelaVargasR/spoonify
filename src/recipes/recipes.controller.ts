@@ -17,7 +17,8 @@ async function createRecipe(req: Request, res: Response) {
     difficultyLevel: body.difficultyLevel,
     priceEstimate: body.priceEstimate,
     isPrivate: body.isPrivate,
-    author: req.user?._id
+    popularity: 0, //BD
+    author: req.user?._id,
   }).save();
 
   res.json({
@@ -25,8 +26,10 @@ async function createRecipe(req: Request, res: Response) {
   });
 }
 
-async function getrecipes(_req: Request, res: Response) {
-  const recipes = await RecipeModel.find();
+async function getrecipes(req: Request, res: Response) {
+  const recipes = await RecipeModel.find({
+    ...(req.query.title ? { title: req.query.title } : {}), //validate title not be undefined
+  });
 
   res.json({
     recipes,
