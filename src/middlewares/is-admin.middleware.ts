@@ -4,7 +4,9 @@ import { Request } from "../types/platform-request.type";
 export async function isAdmin(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user?.isAdmin) {
-      message: "Access denied. Admins only.";
+      res.status(401).json({
+        message: "Unauthorized",
+      });
     }
 
     next();
