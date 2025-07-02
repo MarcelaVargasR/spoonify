@@ -1,5 +1,20 @@
 import { Schema, model } from "mongoose";
 
+const ingredientSchema = new Schema({
+  name: {
+    type: String,
+    require: true,
+  },
+  unit: {
+    type: String,
+    require: true,
+  },
+  quantity: {
+    type: Number,
+    require: true,
+  },
+});
+
 const recipeSchema = new Schema({
   title: {
     type: String,
@@ -14,28 +29,7 @@ const recipeSchema = new Schema({
   image: {
     type: String,
   },
-  ingredients: [
-    {
-      name: { type: String, required: true },
-      quantity: { type: Number, required: true },
-      unit: {
-        type: String,
-        required: true,
-        enum: [
-          "g",
-          "kg",
-          "ml",
-          "l",
-          "cup",
-          "tbsp",
-          "tsp",
-          "piece",
-          "slice",
-          "other",
-        ],
-      },
-    },
-  ],
+  ingredients: [ingredientSchema],
   preparationSteps: [
     {
       type: String,

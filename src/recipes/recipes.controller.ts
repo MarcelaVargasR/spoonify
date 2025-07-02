@@ -9,6 +9,14 @@ async function createRecipe(req: Request, res: Response) {
   const newRecipe = await new RecipeModel({
     title: body.title,
     description: body.description,
+    image: body.image,
+    ingredients: body.ingredients,
+    preparationSteps: body.preparationSteps,
+    preparationTime: body.preparationTime,
+    cookingTime: body.cookingTime,
+    difficultyLevel: body.difficultyLevel,
+    priceEstimate: body.priceEstimate,
+    isPrivate: body.isPrivate
   }).save();
 
   res.json({

@@ -19,11 +19,15 @@ const ingredientSchema = new Schema({
       "piece",
       "slice",
       "other",
-      "whole"
+      "whole",
     ],
+  },
+  quantity: {
+    type: Number,
+    require: true,
   },
 });
 
-const ingredientModel = model("ingredient", ingredientSchema);
+const IngredientModel = model("Ingredient", ingredientSchema);
 
-export { ingredientModel };
+export { IngredientModel };
