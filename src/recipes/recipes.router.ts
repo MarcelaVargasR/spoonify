@@ -5,7 +5,8 @@ import {
   updateRecipeById,
   getRecipeById,
   deleteRecipeById,
-  addRecipeLike
+  addRecipeLike,
+  deleteRecipeLike,
 } from "./recipes.controller";
 import { isAuthenticated } from "../middlewares/is-authenticated.middleware";
 import { isAdmin } from "../middlewares/is-admin.middleware";
@@ -18,6 +19,7 @@ router.route("/:id").put(isAuthenticated, isAdmin, updateRecipeById);
 router.route("/:id").get(isAuthenticated, getRecipeById);
 router.route("/:id").delete(isAuthenticated, isAdmin, deleteRecipeById);
 
-router.route("/:id/like").post(isAuthenticated, addRecipeLike)
+router.route("/:id/like").post(isAuthenticated, addRecipeLike);
+router.route("/:id/delete").delete(isAuthenticated, deleteRecipeLike);
 
 export { router };

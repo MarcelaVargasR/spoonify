@@ -73,22 +73,12 @@ async function addRecipeLike(req: Request, res: Response) {
   }
 
   // this validation is for the recipe is in favorite and not duplicate, is not we continue adding in favorite
-  // const isRecipeInLikes = req.user!.favoriteRecipes.some((id)=>{
-  //   return recipeId === id
-  // })
-  // if (isRecipeInLikes) {
-  //   res.status(500).json({
-  //     message: "Recipe is in favorites"
-  //   })
-  // }
-  // console.log("🚀 ~ isRecipeInLikes ~ isRecipeInLikes:", isRecipeInLikes)
-
   const doesRecipeHasUserLike = recipe!.likes.some((id) => {
     return (user._id = id);
   });
   if (doesRecipeHasUserLike) {
     res.status(500).json({
-      message: "Recipe is in favorite",
+      message: "Recipe is already liked by this user",
     });
   }
 
@@ -96,17 +86,38 @@ async function addRecipeLike(req: Request, res: Response) {
   await RecipeModel.findByIdAndUpdate(recipe!._id, {
     //add to set is a push referent to arrays
     $addToSet: { likes: user._id },
+    
   });
-
-  // IF in that list, then return error 500
-  // If not in that list, then add it to the list
-
-  // do a user.update
-  // increase the amount of likes on the recipe model and do a update
-  // return 200
 
   res.status(200).json({
     message: "Like successfully added",
+  });
+}
+
+async function deleteRecipeLike(req: Request, res: Response) {
+  const user = req.user!;
+  const recipeId = req.params.id;
+
+  const recipe = await RecipeModel.findById(recipeId);
+  if (!recipe) {
+    res.status(404).json({ message: "Recipe not found" });
+  }
+
+  const doesRecipeHasUserLike = recipe!.likes.some((id) => {
+    return (user._id = id)
+  })
+  if(!doesRecipeHasUserLike){
+    res.status(500).json({
+      message: "Recipe has not been liked by this user"
+    })
+  }
+
+  await RecipeModel.findByIdAndUpdate(recipe!.id,{
+    $pull: {likes: user._id}
+  })
+
+  res.status(200).json({
+    message: "Like successfully deleted",
   });
 }
 
@@ -117,4 +128,5 @@ export {
   updateRecipeById,
   deleteRecipeById,
   addRecipeLike,
+  deleteRecipeLike,
 };
