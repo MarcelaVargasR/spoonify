@@ -63,7 +63,13 @@ const recipeSchema = new Schema({
   author:{
     type: Schema.Types.ObjectId,
     ref: "User"
-  }
+  },
+  likes:[
+    {
+      type: String,
+      ref: "User"
+    }
+  ]
 });
 
 const RecipeModel = model("Recipe", recipeSchema);

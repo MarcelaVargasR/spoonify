@@ -13,4 +13,5 @@ export type RecipeType = {
   priceEstimate: number;
   isPrivate: boolean;
   author: UserType
+  likes: string[]
 };

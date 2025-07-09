@@ -12,8 +12,8 @@ const userSchema = new Schema({
   },
   isAdmin: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 const UserModel = model("User", userSchema);
