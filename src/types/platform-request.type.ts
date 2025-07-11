@@ -3,7 +3,9 @@ import { UserType } from "./user.type";
 
 type UserTypeWithoutPassword = Omit<UserType, "password">;
 type PlatformRequestQuery = {
-  title?: string
+  title?: string;
+  page?: string;
+  limit?: string;
 };
 
 export type Request = ExpressRequest & {

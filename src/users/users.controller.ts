@@ -36,7 +36,6 @@ async function getUserById(req: Request, res: Response) {
 }
 
 async function updateUserById(req: Request, res: Response) {
-  console.log("🚀 ~ updateUserById ~ req:", req);
   const body: UserType = req.body;
   const userId = req.params.id;
   const updateUser = await UserModel.findByIdAndUpdate(userId, body, {

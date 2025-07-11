@@ -31,7 +31,6 @@ export async function isAuthenticated(
     const userId = payload.id;
     //verify the ID exist
     const user = await UserModel.findById(userId);
-    console.log("🚀 ~ user:", user)
     if (!user) {
       res.status(404).json({
         message: "User not found",

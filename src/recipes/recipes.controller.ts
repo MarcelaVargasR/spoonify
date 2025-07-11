@@ -2,6 +2,7 @@ import { Response } from "express";
 import { RecipeModel } from "./Recipe.model";
 import { RecipeType } from "../types/recipe.type";
 import { Request } from "../types/platform-request.type";
+import { PaginationType } from "../types/pagination.type";
 
 async function createRecipe(req: Request, res: Response) {
   const body: RecipeType = req.body;
@@ -27,13 +28,34 @@ async function createRecipe(req: Request, res: Response) {
 }
 
 async function getrecipes(req: Request, res: Response) {
+  //pagination
+  const page = Number.isNaN(parseInt(req.query.page!))
+    ? 1
+    : parseInt(req.query.page!) === 0
+    ? 1
+    : parseInt(req.query.page!); //validation if the user gives you 0  === 0 ? 1 : parseInt(req.query.page!)
+  console.log("🚀 ~ getrecipes ~ page:", page);
+
+  const limit = Number.isNaN(parseInt(req.query.limit!))
+    ? 10
+    : parseInt(req.query.limit!) === 0
+    ? 10
+    : parseInt(req.query.limit!); //validation if the user gives you 0
+  console.log("🚀 ~ getrecipes ~ limit:", limit);
+
   const recipes = await RecipeModel.find({
     ...(req.query.title ? { title: req.query.title } : {}), //validate title not be undefined// if
   }).populate(["author"]);
-  console.log("🚀 ~ getrecipes ~ recipes:", recipes);
 
   res.json({
-    recipes,
+    pagination: {
+      currentPage: page,
+      nextPage: 0,
+      pageCount: 0,
+      previousPage: 0,
+      totalCount: 0,
+    } as PaginationType,
+    data: recipes,
   });
 }
 
@@ -86,7 +108,6 @@ async function addRecipeLike(req: Request, res: Response) {
   await RecipeModel.findByIdAndUpdate(recipe!._id, {
     //add to set is a push referent to arrays
     $addToSet: { likes: user._id },
-    
   });
 
   res.status(200).json({
@@ -104,17 +125,17 @@ async function deleteRecipeLike(req: Request, res: Response) {
   }
 
   const doesRecipeHasUserLike = recipe!.likes.some((id) => {
-    return (user._id = id)
-  })
-  if(!doesRecipeHasUserLike){
+    return (user._id = id);
+  });
+  if (!doesRecipeHasUserLike) {
     res.status(500).json({
-      message: "Recipe has not been liked by this user"
-    })
+      message: "Recipe has not been liked by this user",
+    });
   }
 
-  await RecipeModel.findByIdAndUpdate(recipe!.id,{
-    $pull: {likes: user._id}
-  })
+  await RecipeModel.findByIdAndUpdate(recipe!.id, {
+    $pull: { likes: user._id },
+  });
 
   res.status(200).json({
     message: "Like successfully deleted",
