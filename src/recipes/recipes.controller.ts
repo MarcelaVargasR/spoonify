@@ -29,12 +29,11 @@ async function createRecipe(req: Request, res: Response) {
 
 async function getrecipes(req: Request, res: Response) {
   //pagination
-  const page = Number.isNaN(parseInt(req.query.page!))
+  const currentPage = Number.isNaN(parseInt(req.query.page!))
     ? 1
     : parseInt(req.query.page!) === 0
     ? 1
     : parseInt(req.query.page!); //validation if the user gives you 0  === 0 ? 1 : parseInt(req.query.page!)
-  console.log("🚀 ~ getrecipes ~ page:", page);
 
   const limit = Number.isNaN(parseInt(req.query.limit!))
     ? 10
@@ -43,17 +42,31 @@ async function getrecipes(req: Request, res: Response) {
     : parseInt(req.query.limit!); //validation if the user gives you 0
   console.log("🚀 ~ getrecipes ~ limit:", limit);
 
+  const totalCount = await RecipeModel.countDocuments();
+
   const recipes = await RecipeModel.find({
     ...(req.query.title ? { title: req.query.title } : {}), //validate title not be undefined// if
-  }).populate(["author"]);
+  })
+    .sort({
+      title: "ascending",
+    })
+    .skip((currentPage - 1) * limit)
+    .limit(limit)
+    .populate(["author"]);
+
+  const previousPage = currentPage > 1 ? currentPage - 1 : null;
+
+  const pageCount = limit === 0 ? 1 : Math.ceil(totalCount / limit);
+
+  const nextPage = currentPage < pageCount ? currentPage + 1 : null;
 
   res.json({
     pagination: {
-      currentPage: page,
-      nextPage: 0,
-      pageCount: 0,
-      previousPage: 0,
-      totalCount: 0,
+      currentPage,
+      nextPage, //quantity of pages
+      pageCount,
+      previousPage,
+      totalCount, // quantity of items
     } as PaginationType,
     data: recipes,
   });
