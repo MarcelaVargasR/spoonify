@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { UserModel } from "./User.model";
 import { UserType } from "../types/user.type";
 import { hashPassword } from "../utils/hash-password.util";
+import {getPagination, getPaginationInfo} from "../utils/pagination.util"
 
 async function createUser(req: Request, res: Response) {
   const body: UserType = req.body;
@@ -18,10 +19,24 @@ async function createUser(req: Request, res: Response) {
   });
 }
 
-async function getAllUser(_req: Request, res: Response) {
-  const user = await UserModel.find();
+async function getAllUser(req: Request, res: Response) {
+  const { page, limit, skip } = getPagination(req.query);
+
+  const filters = req.query.search
+    ? { email: { $regex: req.query.search, $options: "i" } }
+    : {};
+
+  const user = await UserModel.find(filters)
+    .skip(skip)
+    .limit(limit)
+    .sort({ email: "ascending" });
+
+  const totalCount = await UserModel.countDocuments(filters);
+  const pagination = getPaginationInfo(totalCount, page, limit);
+  
 
   res.json({
+    pagination,
     user,
   });
 }
